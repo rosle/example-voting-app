@@ -1,16 +1,13 @@
 sudo: required
 language: ruby
 services:
-  - docker
+- docker
 script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker pull nimbl3/athena-web:chore_gitlab-ci
-  - docker-compose -f docker-compose.yml build
-  - docker push nimbl3/athena-web:chore_gitlab-ci
-  - docker-compose -f docker-compose.test.yml run test yarn lint
-  - docker-compose -f docker-compose.test.yml run test rspec --exclude-pattern "spec/systems/**/*_spec.rb"
-    --profile
-  - docker-compose -f docker-compose.test.yml run test rspec spec/systems/ --profile
-env:
-  global:
-    secure: S2nFV4TmqD6zMP9ESKV8iCf65aG5EChs5r4nxhGbKMIPZpCmer7Ao8WygPBgljjY8T2+ZIZSj7XmgYUwe62L759Tdf+Ma8mX5YBpj3hH2H9madB9miwO48BaQQjFfGPO6Xc+zoNNgpn6np8BGiuh5cNupgf1BlL4ZP7U0NxmDDf/X44QSxzw65CUmdAJFhh0RZ+4wz++jyQc+8KykO6Q3rgEuNwmFDflbuRho7K5eaH+IgrpwjSQdpgi9gqeCnsO8V38MzKTG01P+vlXWbcrr+4UlR/pa2avIj+r2ebCxoeCKj5BI1xS9MwLn1xIVQwXuwZJfiVDm/93ycnU8Pi/4t8UsgyHPDi5Oz3F+9bLcewmmd4kmcWS8AZg/Om4Gkd/ZpZCUgjUwDs6CRdAXQEyk5f5oL0X2mwrj7mQafbpmCUmgn9dbhMOGlHjyPIkJtM7UtoSEmvYguMspODCPvkhhMUHk3q8XTc1wuVXMdd97TZ0OPO5ziWHzQLs5oKcxURakpN2h4t8+dAkUj59OsE0Xx1fgIg7rZZvS5upKSwrOcDIPBa9/UxzcaHdAM0M3Uz5UcIVQxQFDVG4ICI9jxn4h/YiVIfLOthUN9hTS5jaUn40R+r7USXv0svBDdrF528bC+92t2jujSv9i7NSkZ7Fcp7ZcTtCglgRGdhS8HjHwKo=
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker pull nimbl3/athena-web:chore_gitlab-ci
+- docker images
+- docker run nimbl3/athena-web:chore_gitlab-ci
+- docker run test yarn lint
+- docker run test rspec --exclude-pattern "spec/systems/**/*_spec.rb"
+  --profile
+- docker run test rspec spec/systems/ --profile
