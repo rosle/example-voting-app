@@ -1,8 +1,15 @@
 sudo: required
 
+language: ruby
+
 services:
   - docker
 
 script:
-	- docker-compose -f docker-compose.yml build
-	
+  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - docker pull nimbl3/athena-web:chore_gitlab-ci
+  - docker-compose -f docker-compose.yml build
+  - docker push nimbl3/athena-web:chore_gitlab-ci
+  - docker-compose -f docker-compose.test.yml run test yarn lint
+  - docker-compose -f docker-compose.test.yml run test rspec --exclude-pattern "spec/systems/**/*_spec.rb" --profile
+  - docker-compose -f docker-compose.test.yml run test rspec spec/systems/ --profile
